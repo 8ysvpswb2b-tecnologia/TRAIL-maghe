@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Piano Pre-Gara 21 Giugno v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--bg:#0a0c0f;--bg2:#111418;--bg3:#161b22;--border:#21262d;--text:#e6edf3;--muted:#8b949e;--dim:#484f58;--accent:#f97316;--green:#22c55e;--blue:#3b82f6;--yellow:#eab308;--red:#ef4444;--purple:#a855f7}
+html,body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{display:none}
+.header{background:linear-gradient(135deg,#0f1419 0%,#1a0a00 50%,#0a0c0f 100%);border-bottom:2px solid var(--accent);padding:18px 16px 14px;position:sticky;top:0;z-index:100;display:flex;align-items:flex-start;gap:12px}
+.header-logo{background:var(--accent);width:46px;height:46px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;clip-path:polygon(10% 0%,100% 0%,90% 100%,0% 100%)}
+.header-text{flex:1}
+.header-eyebrow{font-size:9px;letter-spacing:3px;color:var(--accent);font-family:'Barlow',sans-serif;font-weight:600;margin-bottom:2px}
+.header h1{font-size:20px;font-weight:900;line-height:1;letter-spacing:-0.5px;text-transform:uppercase}
+.header h1 span{color:var(--accent)}
+.header-sub{font-size:10px;color:var(--muted);font-family:'Barlow',sans-serif;margin-top:3px;line-height:1.4}
+.header-target{background:rgba(249,115,22,0.1);border:1px solid var(--accent);padding:6px 10px;text-align:center;flex-shrink:0}
+.header-target-val{font-size:18px;font-weight:900;color:var(--accent);line-height:1}
+.header-target-label{font-size:8px;color:var(--muted);letter-spacing:2px;font-family:'Barlow',sans-serif}
+.tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto;position:sticky;top:82px;z-index:99}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{background:none;border:none;border-bottom:2px solid transparent;padding:12px 12px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:color .2s;flex-shrink:0}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.content{padding:18px 16px 80px}
+.tab-panel{display:none}
+.tab-panel.active{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.sec-title{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:10px;margin-top:18px}
+.sec-title:first-child{margin-top:0}
+.week-pills{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.week-pill{background:var(--bg3);border:1px solid var(--border);color:var(--muted);padding:8px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:12px;letter-spacing:1px;cursor:pointer;text-align:center;transition:all .15s;line-height:1.3;min-width:52px}
+.week-pill.active{background:var(--accent);border-color:var(--accent);color:#000}
+.week-pill .sub{font-size:8px;letter-spacing:1px;display:block;margin-top:1px}
+.week-banner{padding:12px 14px;margin-bottom:12px;border-left:4px solid;background:var(--bg3);border-radius:0 4px 4px 0}
+.week-banner-title{font-size:15px;font-weight:800;letter-spacing:.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.week-banner-focus{font-size:11px;color:var(--muted);font-family:'Barlow',sans-serif;margin-top:5px;line-height:1.5}
+.week-volume{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.vol-pill{padding:3px 10px;font-size:9px;letter-spacing:1px;font-weight:700;border:1px solid;border-radius:2px}
+.badge{padding:2px 8px;font-size:9px;letter-spacing:2px;font-weight:700;border:1px solid}
+/* SESSION CARDS */
+.session-card{background:var(--bg3);border:1px solid var(--border);margin-bottom:7px;border-radius:4px;overflow:hidden;transition:border-color .2s}
+.session-card.open{border-color:var(--accent)}
+.session-header{padding:11px 13px;display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none;-webkit-user-select:none}
+.session-header:active{background:rgba(255,255,255,.04)}
+.sess-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:44px;gap:3px}
+.sess-type-icon{font-size:20px;line-height:1}
+.sess-num{font-size:8px;letter-spacing:2px;font-weight:700;padding:2px 5px;border:1px solid;border-radius:2px}
+.session-meta{flex:1;min-width:0}
+.sess-tag-row{display:flex;align-items:center;gap:5px;margin-bottom:2px;flex-wrap:wrap}
+.sess-cat{font-size:8px;letter-spacing:2px;padding:1px 5px;font-weight:700}
+.sess-int{font-size:8px;letter-spacing:1px;font-weight:700}
+.sess-dur{font-size:8px;color:var(--muted);font-family:'Barlow',sans-serif}
+.session-label{font-size:13px;font-weight:800;line-height:1.2}
+.session-chevron{color:var(--dim);font-size:14px;flex-shrink:0;transition:transform .2s}
+.session-card.open .session-chevron{transform:rotate(180deg)}
+.session-body{display:none;border-top:1px solid var(--border);padding:13px;background:rgba(255,255,255,.015)}
+.session-card.open .session-body{display:block}
+.block-title{font-size:9px;letter-spacing:3px;color:var(--accent);font-weight:700;text-transform:uppercase;margin-bottom:7px;margin-top:12px}
+.block-title:first-child{margin-top:0}
+.block-items{display:flex;flex-direction:column;gap:3px}
+.block-item{display:flex;gap:7px;align-items:flex-start;padding:6px 10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);font-family:'Barlow',sans-serif;font-size:12px;line-height:1.5}
+.block-item-arrow{color:var(--accent);flex-shrink:0;margin-top:3px;font-size:9px}
+.session-note{margin-top:9px;padding:9px 11px;background:rgba(234,179,8,.08);border:1px solid rgba(234,179,8,.3);font-family:'Barlow',sans-serif;font-size:12px;line-height:1.6}
+.session-note-label{font-size:9px;color:var(--yellow);letter-spacing:2px;font-weight:700;display:block;margin-bottom:3px}
+.key-badge{display:inline-block;background:rgba(168,85,247,.15);border:1px solid var(--purple);color:var(--purple);font-size:9px;letter-spacing:2px;font-weight:700;padding:2px 8px;margin-left:6px}
+/* RITMI TAB */
+.zone-row{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg3);border:1px solid;margin-bottom:7px;border-radius:4px}
+.zone-box{width:44px;height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid;border-radius:2px}
+.zone-name{font-size:11px;color:var(--muted);font-family:'Barlow',sans-serif}
+.zone-pace{font-size:19px;font-weight:900}
+.card{background:var(--bg3);border:1px solid var(--border);padding:14px;margin-bottom:10px;border-radius:4px;font-family:'Barlow',sans-serif;font-size:12px;line-height:1.7}
+/* PERCORSO */
+.seg-card{padding:13px 14px;margin-bottom:8px;background:var(--bg3);border:1px solid var(--border);border-left:4px solid;border-radius:0 4px 4px 0}
+.seg-title{font-size:14px;font-weight:800;margin-bottom:5px}
+.seg-detail{font-family:'Barlow',sans-serif;font-size:12px;color:var(--muted);line-height:1.65}
+.stat-mini-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+.stat-mini{padding:3px 9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-size:10px;font-weight:700;border-radius:2px}
+/* STRATEGIA */
+.strat-step{display:flex;gap:12px;padding:13px 14px;background:var(--bg3);border:1px solid;margin-bottom:8px;border-radius:0 4px 4px 0;border-left:4px solid}
+.strat-km{font-size:20px;font-weight:900;line-height:1;flex-shrink:0;min-width:48px;text-align:center}
+.strat-km-label{font-size:9px;color:var(--muted);letter-spacing:1px;font-family:'Barlow',sans-serif;display:block;margin-top:2px}
+.strat-title{font-size:13px;font-weight:800;margin-bottom:4px}
+.strat-detail{font-family:'Barlow',sans-serif;font-size:12px;color:var(--muted);line-height:1.65}
+.rule-item{font-family:'Barlow',sans-serif;font-size:12px;line-height:1.6;padding:6px 10px;background:rgba(239,68,68,.05);border-left:2px solid rgba(239,68,68,.4);margin-bottom:5px}
+.rule-arrow{color:var(--red);font-weight:700;margin-right:5px}
+.footer{text-align:center;font-family:'Barlow',sans-serif;font-size:10px;color:var(--dim);letter-spacing:2px;border-top:1px solid var(--border);padding:18px 0 8px;margin-top:28px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">🗻</div>
+  <div class="header-text">
+    <div class="header-eyebrow">PIANO PRE-GARA · 32 GIORNI</div>
+    <h1>Trail <span>21 Giugno</span></h1>
+    <div class="header-sub">4 sessioni/settimana · Casa + Outdoor · VO₂max 64</div>
+  </div>
+  <div class="header-target">
+    <div class="header-target-val">sub52'</div>
+    <div class="header-target-label">TARGET</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="programma">📅 Programma</button>
+  <button class="tab-btn" data-tab="ritmi">⚡ Ritmi</button>
+  <button class="tab-btn" data-tab="percorso">🗻 Percorso</button>
+  <button class="tab-btn" data-tab="strategia">🏆 Strategia</button>
+</div>
+
+<div class="content">
+
+<!-- ===== PROGRAMMA ===== -->
+<div class="tab-panel active" id="tab-programma">
+  <div class="card" style="border-color:rgba(249,115,22,.25);border-left:3px solid var(--accent);margin-bottom:14px">
+    <div style="font-size:10px;color:var(--accent);letter-spacing:2px;font-weight:700;margin-bottom:5px">STRUTTURA FISSA OGNI SETTIMANA</div>
+    <div style="color:var(--text)">Ogni settimana ha esattamente <strong>4 sessioni</strong>, scegli i giorni che preferisci. L'ordine suggerito è indicativo — l'unica regola è mettere almeno un giorno di riposo tra una sessione di gambe e la corsa.</div>
+  </div>
+  <div class="week-pills" id="week-pills"></div>
+  <div class="week-banner" id="week-banner"></div>
+  <div id="sessions-list"></div>
+</div>
+
+<!-- ===== RITMI ===== -->
+<div class="tab-panel" id="tab-ritmi">
+  <div class="sec-title">Fitness Reale — Garmin 19/05/2026</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+    <div style="background:var(--bg3);border:1px solid var(--border);padding:12px;border-radius:4px;text-align:center">
+      <div style="font-size:9px;color:var(--muted);letter-spacing:2px;font-family:'Barlow',sans-serif;margin-bottom:2px">5K PREDETTO</div>
+      <div style="font-size:11px;color:var(--dim);text-decoration:line-through;font-family:'Barlow',sans-serif">20:50</div>
+      <div style="font-size:20px;font-weight:900;color:var(--green)">18:57</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);padding:12px;border-radius:4px;text-align:center">
+      <div style="font-size:9px;color:var(--muted);letter-spacing:2px;font-family:'Barlow',sans-serif;margin-bottom:2px">10K PREDETTO</div>
+      <div style="font-size:11px;color:var(--dim);text-decoration:line-through;font-family:'Barlow',sans-serif">47:17</div>
+      <div style="font-size:20px;font-weight:900;color:var(--green)">40:57</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);padding:12px;border-radius:4px;text-align:center">
+      <div style="font-size:9px;color:var(--muted);letter-spacing:2px;font-family:'Barlow',sans-serif;margin-bottom:2px">VO₂MAX</div>
+      <div style="font-size:20px;font-weight:900;color:var(--accent)">64</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);padding:12px;border-radius:4px;text-align:center">
+      <div style="font-size:9px;color:var(--muted);letter-spacing:2px;font-family:'Barlow',sans-serif;margin-bottom:2px">PESO</div>
+      <div style="font-size:20px;font-weight:900;color:var(--blue)">61 kg</div>
+    </div>
+  </div>
+
+  <div class="sec-title">Zone di Ritmo (piano, aggiornate)</div>
+  <div class="zone-row" style="border-color:rgba(34,197,94,.4)">
+    <div class="zone-box" style="color:#22c55e;border-color:#22c55e;background:rgba(34,197,94,.15)">Z1</div>
+    <div><div class="zone-name">Recupero Attivo</div><div class="zone-pace" style="color:#22c55e">5:10–5:40 /km</div></div>
+  </div>
+  <div class="zone-row" style="border-color:rgba(59,130,246,.4)">
+    <div class="zone-box" style="color:#3b82f6;border-color:#3b82f6;background:rgba(59,130,246,.15)">Z2</div>
+    <div><div class="zone-name">Aerobico Base</div><div class="zone-pace" style="color:#3b82f6">4:40–5:00 /km</div></div>
+  </div>
+  <div class="zone-row" style="border-color:rgba(234,179,8,.4)">
+    <div class="zone-box" style="color:#eab308;border-color:#eab308;background:rgba(234,179,8,.15)">Z3</div>
+    <div><div class="zone-name">Aerobico Potenza</div><div class="zone-pace" style="color:#eab308">4:25–4:40 /km</div></div>
+  </div>
+  <div class="zone-row" style="border-color:rgba(249,115,22,.4)">
+    <div class="zone-box" style="color:#f97316;border-color:#f97316;background:rgba(249,115,22,.15)">Z4</div>
+    <div><div class="zone-name">Soglia</div><div class="zone-pace" style="color:#f97316">4:10–4:20 /km</div></div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent);border-color:rgba(249,115,22,.3);margin-top:14px">
+    <div style="font-size:10px;color:var(--accent);letter-spacing:2px;font-weight:700;margin-bottom:5px">⚠️ IN SALITA: NON USARE IL RITMO AL KM</div>
+    Su pendenza del 20-25% il GPS ti darà un ritmo che sembra lentissimo (9-10 min/km) pur essendo in piena Z4. Usa esclusivamente la <strong>frequenza cardiaca</strong> o la <strong>percezione dello sforzo (RPE)</strong>. La salita principale della gara (km 4.4, 25.4%) a qualsiasi ritmo di corsa è uno sforzo da Z4.
+  </div>
+
+  <div class="sec-title">RPE Guide per il Percorso Gara</div>
+  <div class="card" style="padding:10px 14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)"><span style="color:#3b82f6;font-weight:700;font-size:13px">RPE 5–6</span><span style="font-family:'Barlow',sans-serif;font-size:12px">Km 0–2 · Prima salita 8%</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)"><span style="color:#22c55e;font-weight:700;font-size:13px">RPE 4–5</span><span style="font-family:'Barlow',sans-serif;font-size:12px">Km 2–3.5 · Discesa/piano → recupera</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)"><span style="color:#ef4444;font-weight:700;font-size:13px">RPE 7–8</span><span style="font-family:'Barlow',sans-serif;font-size:12px">Km 3.5–5.5 · Salita principale 25%+</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0"><span style="color:#eab308;font-weight:700;font-size:13px">RPE 6–7</span><span style="font-family:'Barlow',sans-serif;font-size:12px">Km 5.5–9.1 · Discesa finale → spingi</span></div>
+  </div>
+</div>
+
+<!-- ===== PERCORSO ===== -->
+<div class="tab-panel" id="tab-percorso">
+  <div class="sec-title">Dati Tecnici</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+    <div style="background:var(--bg3);border:1px solid var(--border);padding:10px;border-radius:4px;text-align:center"><div style="font-size:9px;color:var(--muted);letter-spacing:2px;font-family:'Barlow',sans-serif">DIST.</div><div style="font-size:18px;font-weight:900;color:var(--green)">9.1km</div></div>
+    <div style="background:var(--bg3);border:1px solid var(--border);padding:10px;border-radius:4px;text-align:center"><div style="font-size:9px;color:var(--muted);letter-spacing:2px;font-family:'Barlow',sans-serif">D+</div><div style="font-size:18px;font-weight:900;color:var(--accent)">468m</div></div>
+    <div style="background:var(--bg3);border:1px solid var(--border);padding:10px;border-radius:4px;text-align:center"><div style="font-size:9px;color:var(--muted);letter-spacing:2px;font-family:'Barlow',sans-serif">QUOTA MAX</div><div style="font-size:18px;font-weight:900;color:var(--blue)">1216m</div></div>
+  </div>
+
+  <div class="seg-card" style="border-left-color:#3b82f6;border-color:rgba(59,130,246,.25)">
+    <div class="seg-title"><span style="color:#3b82f6">① Km 0–2</span> · Prima Salita</div>
+    <div class="seg-detail">895m → 1056m. Pendenza media 8.3%. Sali 167m in 2 km — gestibile ma insidiosa. L'adrenalina da partenza ti spingerà a forzare il ritmo: resistere qui è la prima chiave della gara.</div>
+    <div class="stat-mini-row"><div class="stat-mini" style="color:#3b82f6">D+ 167m</div><div class="stat-mini">8.3% media</div><div class="stat-mini">~13 min target</div></div>
+  </div>
+  <div class="seg-card" style="border-left-color:#22c55e;border-color:rgba(34,197,94,.25)">
+    <div class="seg-title"><span style="color:#22c55e">② Km 2–3.5</span> · Discesa/Piano</div>
+    <div class="seg-detail">Scendi 128m in 1.5 km. Unica finestra di recupero aerobico. Qui prendi il primo gel, regoli il respiro, prepari la testa per quello che viene dopo.</div>
+    <div class="stat-mini-row"><div class="stat-mini" style="color:#22c55e">D− 128m</div><div class="stat-mini">GEL km 2.2</div><div class="stat-mini">~7 min target</div></div>
+  </div>
+  <div class="seg-card" style="border-left-color:#ef4444;border-color:rgba(239,68,68,.35)">
+    <div class="seg-title"><span style="color:#ef4444">③ Km 3.5–5.5</span> · Salita Principale ⚠️</div>
+    <div class="seg-detail">Il cuore della gara. 268m in 2 km, picco al km 4.4 a 25.4% di pendenza. Power hiking con bastoncini è la scelta efficiente: passi corti (40–50 cm), cadenza 70–80/min, sguardo a 3m avanti. Non guardare la cima. Conta 20 passi alla volta.</div>
+    <div class="stat-mini-row"><div class="stat-mini" style="color:#ef4444">D+ 268m</div><div class="stat-mini" style="color:#ef4444">Picco 25.4%</div><div class="stat-mini">BASTONCINI</div><div class="stat-mini">~18 min target</div></div>
+  </div>
+  <div class="seg-card" style="border-left-color:#eab308;border-color:rgba(234,179,8,.25)">
+    <div class="seg-title"><span style="color:#eab308">④ Km 5.5–9.1</span> · Discesa Finale</div>
+    <div class="seg-detail">3.6 km, −337m. Con il tuo VO₂max 64 e le gambe che stiamo preparando, questa è la tua sezione. Corpo in avanti, appoggio attivo su avampiede. I Nordic Curl in allenamento servono esattamente per questo: eccentrico del quadricipite sotto fatica.</div>
+    <div class="stat-mini-row"><div class="stat-mini" style="color:#eab308">D− 337m</div><div class="stat-mini">3.6 km</div><div class="stat-mini">GEL km 5.5</div><div class="stat-mini">~19 min target</div></div>
+  </div>
+
+  <div class="card" style="background:rgba(249,115,22,.06);border-color:rgba(249,115,22,.3)">
+    <div style="font-size:10px;color:var(--accent);letter-spacing:2px;font-weight:700;margin-bottom:6px">STIMA REALISTICA</div>
+    Con VO₂max 64 e 10K predetto 40:57, la tua equivalente pianeggiante su 9.1km è circa 37 min. Aggiungendo D+, coefficiente trail e prima volta sul percorso:<br><br>
+    <span style="color:var(--green);font-weight:900;font-size:16px">Giornata normale → 48–54 min</span><br>
+    <span style="color:var(--accent);font-weight:900;font-size:16px">Giornata ottima → sub 48 min</span>
+  </div>
+</div>
+
+<!-- ===== STRATEGIA ===== -->
+<div class="tab-panel" id="tab-strategia">
+  <div class="sec-title">Piano Gara Tratto per Tratto</div>
+  <div class="strat-step" style="border-color:rgba(59,130,246,.3);border-left-color:#3b82f6">
+    <div class="strat-km"><span style="color:#3b82f6">0–2</span><span class="strat-km-label">km</span></div>
+    <div><div class="strat-title" style="color:#3b82f6">Partenza Controllata · RPE 5-6</div><div class="strat-detail">Prima volta sul percorso: parti conservativo. Lascia andare chi parte forte — li riprendi nella discesa finale. La prima salita all'8% è ingannevole perché si consuma silenziosamente.</div></div>
+  </div>
+  <div class="strat-step" style="border-color:rgba(34,197,94,.3);border-left-color:#22c55e">
+    <div class="strat-km"><span style="color:#22c55e">2–3.5</span><span class="strat-km-label">km</span></div>
+    <div><div class="strat-title" style="color:#22c55e">Recovery Window · Gel + Reset</div><div class="strat-detail">Gel a km 2.2 (sodio ≥150mg) prima che la salita principale ti tolga la voglia di mangiare. Respiri profondi, bastoncini pronti, reset mentale.</div></div>
+  </div>
+  <div class="strat-step" style="border-color:rgba(239,68,68,.4);border-left-color:#ef4444">
+    <div class="strat-km"><span style="color:#ef4444">3.5–5.5</span><span class="strat-km-label">km</span></div>
+    <div><div class="strat-title" style="color:#ef4444">⚠️ La Salita Che Decide Tutto</div><div class="strat-detail">Fino al km 4.0 puoi correre a RPE 7. Dopo: bastoncini in spinta, passi cortissimi 40-50cm, cadenza 70-80/min, respiro 2-2. Seconda parte della salita (km 4.8-5.5): se senti contrarsi i muscoli → 3 respiri profondi, riduci il 10% la cadenza, non fermarti mai.</div></div>
+  </div>
+  <div class="strat-step" style="border-color:rgba(234,179,8,.3);border-left-color:#eab308">
+    <div class="strat-km"><span style="color:#eab308">5.5–9.1</span><span class="strat-km-label">km</span></div>
+    <div><div class="strat-title" style="color:#eab308">Discesa — Qui Si Guadagna</div><div class="strat-detail">Secondo gel al km 5.5. Poi vai: corpo in avanti, appoggio attivo, sguardo lungo. Con il peso di 61 kg e i quadricipiti preparati, la discesa è il tuo vantaggio su atleti più pesanti.</div></div>
+  </div>
+
+  <div class="sec-title">Nutrition Race Day</div>
+  <div class="card" style="border-left:3px solid var(--yellow);border-color:rgba(234,179,8,.3)">
+    <div style="display:flex;flex-direction:column;gap:7px">
+      <div>🌙 <strong>Sera prima:</strong> Pasta + olio evo + parmigiano · 900 kcal · ore 20:00</div>
+      <div>☀️ <strong>H-3:</strong> Riso + banana + miele · 500 kcal · semplice</div>
+      <div>⏰ <strong>H-45 min:</strong> Gel attivazione + 400ml acqua elettrolitica</div>
+      <div>🏃 <strong>Km 2.2 (~20 min):</strong> Primo gel — sodio ≥150mg</div>
+      <div>🏁 <strong>Km 5.5 (~45 min):</strong> Secondo gel — anche senza fame</div>
+    </div>
+  </div>
+
+  <div class="sec-title" style="color:var(--red)">Regole Inviolabili</div>
+  <div style="background:var(--bg3);border:1px solid var(--red);border-left:4px solid var(--red);padding:14px;border-radius:0 4px 4px 0">
+    <div class="rule-item"><span class="rule-arrow">→</span>Non guardare il ritmo GPS in salita — usa FC o RPE</div>
+    <div class="rule-item"><span class="rule-arrow">→</span>Crampi: 3 sec di camminata + respiro profondo + idratazione. Mai fermarsi di colpo.</div>
+    <div class="rule-item"><span class="rule-arrow">→</span>Magnesio Bisglicinato 400mg la sera prima. Non saltarlo.</div>
+    <div class="rule-item"><span class="rule-arrow">→</span>Prima volta sul percorso: rincorri la sensazione, non il GPS target.</div>
+  </div>
+</div>
+
+</div><!-- /content -->
+<div class="footer">PIANO PRE-GARA · 21 GIUGNO 2026 · 9.1KM 468M D+ · SUB 52MIN</div>
+
+<script>
+(function(){
+
+const weeks = [
+{
+  week:1, label:"W1", sub:"RECUPERO", color:"#3b82f6",
+  focus:"Sei a 3 giorni dalla gara di Pelos. Nessun carico pesante: l'obiettivo è recuperare bene e fare il primo contatto con la pendenza specifica del 21 giugno. Volume forza ridotto del 30%.",
+  pills:[{c:"#3b82f6",t:"CARICO -30%"},{c:"#22c55e",t:"RECUPERO PRIORITÀ"}],
+  sessions:[
+    {
+      num:"01", cat:"CASA", icon:"💪", catColor:"#f97316", int:"MEDIA", intColor:"#f97316", dur:"50 min",
+      label:"Upper Body — Mantenimento",
+      blocks:[
+        {t:"Main Work (volume -30%)", i:[
+          "Trazioni pronazione: 3×5 | Tempo 3-1-2 | Riposo 3 min",
+          "Spinta manubri panca inclinata 30-45° — 16kg: 3×8 | Riposo 2:30",
+          "Military Press seduto panca 90° — 14kg: 3×8 | Riposo 2 min",
+          "Chest Supported Row pancia in giù — 16kg: 3×8 | Riposo 2:30"
+        ]},
+        {t:"Accessori", i:[
+          "Curl Hammer 12kg: 3×10",
+          "Face Pull elastico: 3×15",
+          "Plank frontale: 3×40 sec"
+        ]}
+      ],
+      note:"Nessun nuovo massimale questa settimana. Tecnica pulita, nessun cedimento."
+    },
+    {
+      num:"02", cat:"CASA", icon:"🏋️", catColor:"#f97316", int:"MEDIA", intColor:"#f97316", dur:"55 min",
+      label:"Lower Body — Trail Specific (volume -30%)",
+      blocks:[
+        {t:"Riscaldamento (7 min)", i:[
+          "Mobilità anca: 2×10 per lato",
+          "Squat corpo libero: 2×15",
+          "Attivazione glutei con band: 2×15"
+        ]},
+        {t:"Main Work", i:[
+          "Squat Bulgaro 14kg: 3×8 | Piede su PANCA PIANA | ISOMETRIA 3 sec in basso | Riposo 2:30",
+          "Step-up sulla panca piana 10kg: 3×12 per gamba | Riposo 90 sec — simula i gradoni del percorso",
+          "Romanian Deadlift 18kg: 3×10 | Riposo 2 min",
+          "Nordic Curl assistito con elastico: 3×4 | Riposo 3 min — protegge i bicipiti femorali in discesa"
+        ]},
+        {t:"Stabilità & Piede Cavo", i:[
+          "Single-leg Glute Bridge: 3×12 per lato",
+          "Calf Raise eccentrico su scalino (3 sec giù): 3×20",
+          "Dead Bug: 3×8 per lato"
+        ]}
+      ]
+    },
+    {
+      num:"03", cat:"SALITA", icon:"⛰️", catColor:"#22c55e", int:"BASSA", intColor:"#22c55e", dur:"35–40 min",
+      label:"Prima Esposizione alla Pendenza Gara",
+      blocks:[
+        {t:"Sessione", i:[
+          "Trova una salita con pendenza 15-20%+ (anche breve, ripetuta più volte)",
+          "30-35 min totali: misto camminata veloce e jogging leggero",
+          "Non correre tutto — l'obiettivo è sentire la pendenza specifica, non fare intensità",
+          "Bastoncini consigliati se li hai: prendici confidenza adesso",
+          "Pratica la cadenza: passi corti 40-50cm, ritmo 70-80 passi/min"
+        ]}
+      ],
+      note:"RPE massimo 5. Questo è un 'test sensoriale' del muscolo sulla pendenza gara, non un allenamento di carico."
+    },
+    {
+      num:"04", cat:"CORSA", icon:"🏃", catColor:"#3b82f6", int:"BASSA", intColor:"#22c55e", dur:"35–40 min",
+      label:"Z2 — Corsa Aerobica di Recupero",
+      blocks:[
+        {t:"Sessione", i:[
+          "35-40 min Z2 — 4:40-5:00/km su terreno piano",
+          "Nessuna salita, terreno regolare",
+          "Rilascio plantare con pallina 3 min/piede dopo la corsa",
+          "Se le gambe sono ancora pesanti da Pelos → riduci a 25 min Z1 (5:10-5:40/km)"
+        ]}
+      ]
+    }
+  ]
+},
+{
+  week:2, label:"W2", sub:"BUILD", color:"#f97316",
+  focus:"Prima settimana di carico vero. Le ripetute in salita sono il cuore di questa fase: alleni esattamente il pattern muscolare che serve al km 4.4. Il long run costruisce la base aerobica per reggere i 9.1km.",
+  pills:[{c:"#f97316",t:"CARICO PIENO"},{c:"#ef4444",t:"RIPETUTE SALITA"}],
+  sessions:[
+    {
+      num:"01", cat:"CASA", icon:"💪", catColor:"#f97316", int:"ALTA", intColor:"#ef4444", dur:"60 min",
+      label:"Upper Body — Volume Pieno",
+      blocks:[
+        {t:"Main Work", i:[
+          "Trazioni supinazione: 4×6 | Tempo 3-1-2 | Riposo 3 min",
+          "Chest Supported Row pancia in giù — 20kg: 4×8 | Pausa 1 sec in contrazione | Riposo 2:30",
+          "Military Press seduto panca 90° — 16kg: 4×8 | Riposo 2:30",
+          "Spinta manubri panca inclinata 30-45° — 18kg: 3×8 | Riposo 2:30"
+        ]},
+        {t:"Accessori", i:[
+          "Lateral Raise 8kg: 3×15",
+          "Face Pull elastico: 3×15",
+          "Plank laterale: 3×30 sec per lato"
+        ]}
+      ]
+    },
+    {
+      num:"02", cat:"CASA", icon:"🏋️", catColor:"#f97316", int:"ALTA", intColor:"#ef4444", dur:"60 min",
+      label:"Lower Body — Forza Trail Completa",
+      blocks:[
+        {t:"Main Work", i:[
+          "Squat Bulgaro 16-18kg: 4×8 | Piede su PANCA PIANA | ISOMETRIA 3 sec | Riposo 2:30",
+          "Affondi camminati 16kg: 3×12 per gamba | Riposo 2 min",
+          "Hip Thrust manubri 20kg: 4×10 | Riposo 2 min",
+          "Step-up sulla panca 12kg: 3×12 per gamba | Riposo 90 sec",
+          "Nordic Curl assistito: 3×5 | Riposo 3 min — +1 rep vs W1"
+        ]},
+        {t:"Stabilità", i:[
+          "Single-leg RDL 10kg: 3×10 per lato — equilibrio e controllo eccentrico",
+          "Calf Raise eccentrico 6kg: 3×15 su scalino"
+        ]}
+      ],
+      note:"La Nordic Curl è l'esercizio più importante per proteggere i bicipiti femorali nella discesa finale di 3.6km."
+    },
+    {
+      num:"03", cat:"SALITA", icon:"⛰️", catColor:"#ef4444", int:"ALTA", intColor:"#ef4444", dur:"55–60 min",
+      label:"Ripetute Salita — Pendenza Gara",
+      blocks:[
+        {t:"Sessione Chiave W2", i:[
+          "Riscaldamento 10 min Z1 piano",
+          "6× 3 min su salita al 20%+ (hiking/jogging misto) + discesa jogging 3 min recupero",
+          "Cadenza target: 70-80 passi/min, passi 40-50cm — allena esattamente il km 4.4",
+          "Defaticamento 10 min Z1",
+          "Totale: ~55 min | D+ ideale 180-250m"
+        ]}
+      ],
+      note:"Se non hai una salita al 20%, usa quella più ripida disponibile e allunga le ripetute a 4 min."
+    },
+    {
+      num:"04", cat:"CORSA", icon:"🏃", catColor:"#3b82f6", int:"MEDIA", intColor:"#f97316", dur:"60–65 min",
+      label:"Long Run Z2 — Costruzione Aerobica",
+      blocks:[
+        {t:"Sessione", i:[
+          "55-65 min Z2 — 4:40-5:00/km su terreno possibilmente misto",
+          "Se il percorso ha salite, gestiscile in Z3 (non spingere oltre)",
+          "Gel elettrolitico a 30 min se superi i 45 min totali",
+          "Simula mentalmente di essere in gara: ritmo, respirazione, relax nelle mani"
+        ]}
+      ],
+      note:"Post-calcetto (se lo fai): riduci a 40 min Z2 o sposta al giorno successivo."
+    }
+  ]
+},
+{
+  week:3, label:"W3", sub:"PICCO", color:"#ef4444",
+  focus:"La settimana più importante del programma. Martedì o mercoledì c'è la simulazione del tratto critico: è l'allenamento su cui si costruisce tutta la preparazione. Dopo questa sessione il carico scende verso il taper.",
+  pills:[{c:"#ef4444",t:"PICCO CARICO"},{c:"#a855f7",t:"SIMULAZIONE GARA"}],
+  sessions:[
+    {
+      num:"01", cat:"CASA", icon:"💪", catColor:"#f97316", int:"MEDIA", intColor:"#f97316", dur:"50 min",
+      label:"Upper Body — Volume -20%",
+      blocks:[
+        {t:"Main Work (inizio taper upper)", i:[
+          "Trazioni: 3×5 | Riposo 3 min",
+          "Spinta manubri panca inclinata — 18kg: 3×8 | Riposo 2:30",
+          "Military Press seduto panca 90° — 16kg: 3×8 | Riposo 2 min",
+          "Chest Supported Row — 18kg: 3×8 | Riposo 2:30"
+        ]},
+        {t:"Accessori minimi", i:[
+          "Curl Hammer: 2×10",
+          "Face Pull elastico: 2×15"
+        ]}
+      ]
+    },
+    {
+      num:"02", cat:"CASA", icon:"🏋️", catColor:"#f97316", int:"MEDIA", intColor:"#f97316", dur:"50 min",
+      label:"Lower Body — Volume -30%, Isometria Focus",
+      blocks:[
+        {t:"Main Work (inizio taper lower)", i:[
+          "Squat Bulgaro 16kg: 3×6 | Piede su PANCA PIANA | ISOMETRIA 3 sec | Riposo 2:30",
+          "Hip Thrust 18kg: 3×8 | Riposo 2 min",
+          "Step-up panca 10kg: 3×10 per gamba | Riposo 90 sec",
+          "Nordic Curl assistito: 2×5 | Riposo 3 min",
+          "Calf Raise eccentrico: 3×15"
+        ]}
+      ],
+      note:"Nessun nuovo carico. Mantieni il segnale neuromuscolare senza accumulare fatica residua."
+    },
+    {
+      num:"03", cat:"SALITA", icon:"⛰️", catColor:"#a855f7", int:"ALTA", intColor:"#a855f7", dur:"65–70 min",
+      label:"⭐ SIMULAZIONE TRATTO CRITICO — Sessione Chiave",
+      blocks:[
+        {t:"La sessione più importante del programma", i:[
+          "Riscaldamento 12 min Z1 piano",
+          "1ª salita: 10-12 min CONTINUI su pendenza 15-20% — simula km 3.5→5.5 gara",
+          "Recupero 5 min camminata Z1",
+          "2ª salita: 10-12 min CONTINUI stessa pendenza — senza bastoncini la prima, con bastoncini la seconda (confronta le sensazioni)",
+          "Discesa tecnica controllata 10 min dopo ognuna — pratica corpo in avanti + appoggio avampiede",
+          "Defaticamento 10 min Z1",
+          "Totale: ~65-70 min | D+ ideale 350-500m"
+        ]}
+      ],
+      note:"Questa sessione ti dirà esattamente a che punto sei. Nota come si sentono i muscoli nella seconda salita rispetto alla prima: quello è il dato più prezioso."
+    },
+    {
+      num:"04", cat:"CORSA", icon:"🏃", catColor:"#3b82f6", int:"MEDIA", intColor:"#f97316", dur:"45 min",
+      label:"Z2/Z3 — Trail Misto",
+      blocks:[
+        {t:"Sessione", i:[
+          "45 min su terreno misto (se possibile trail, altrimenti strada con variazioni)",
+          "Ritmo libero per sensazione — non forzare le zone",
+          "Gel se superi i 35 min",
+          "Focus finale 10 min: pratica la tecnica di discesa"
+        ]}
+      ],
+      note:"Se le gambe sono ancora cariche dalla simulazione di salita → riduci a 30 min Z1 piano senza discussioni."
+    }
+  ]
+},
+{
+  week:4, label:"W4", sub:"TAPER", color:"#a855f7",
+  focus:"Volume totale -40%. Qualità sopra quantità. Le gambe si sgonfieranno e tornerai a sentirti leggero — è normale e positivo, non è perdita di forma. L'unica sessione di intensità è lo sharpening Z4.",
+  pills:[{c:"#a855f7",t:"TAPER -40%"},{c:"#22c55e",t:"GAMBE FRESCHE"}],
+  sessions:[
+    {
+      num:"01", cat:"CASA", icon:"💪", catColor:"#f97316", int:"BASSA", intColor:"#22c55e", dur:"40 min",
+      label:"Upper Body — Taper",
+      blocks:[
+        {t:"Main Work — leggero e pulito", i:[
+          "Trazioni: 3×4 | Tecnica perfetta | Riposo 3 min",
+          "Spinta manubri panca inclinata — 16kg: 3×6 | Riposo 2:30",
+          "Military Press seduto panca 90° — 14kg: 3×8 | Riposo 2 min",
+          "Chest Supported Row — 16kg: 3×8 | Riposo 2:30"
+        ]}
+      ],
+      note:"Niente accessori, niente a cedimento. L'obiettivo è mantenersi reattivi, non aumentare il carico."
+    },
+    {
+      num:"02", cat:"CASA", icon:"🏋️", catColor:"#22c55e", int:"BASSA", intColor:"#22c55e", dur:"35 min",
+      label:"Lower Body — Solo Attivazione",
+      blocks:[
+        {t:"Work minimale", i:[
+          "Squat Bulgaro 12kg: 3×6 | Piede su panca | Isometria 2 sec — attiva il pattern, non stressare",
+          "Affondi corpo libero: 3×8 per gamba",
+          "Calf Raise: 2×15",
+          "Single-leg balance su superfice instabile: 30 sec per lato × 3"
+        ]}
+      ],
+      note:"Nessun Nordic Curl questa settimana. Nessun carico pesante. Le gambe fresche valgono più di qualsiasi extra."
+    },
+    {
+      num:"03", cat:"CORSA", icon:"🏃", catColor:"#3b82f6", int:"ALTA", intColor:"#ef4444", dur:"37 min",
+      label:"Z4 Sharpening — Mantieni la Velocità",
+      blocks:[
+        {t:"Sessione", i:[
+          "Riscaldamento 10 min Z1-Z2",
+          "3× [4 min Z4 (~4:10-4:20/km) + 3 min Z1 recupero]",
+          "Defaticamento 10 min Z1",
+          "Totale: ~37 min — volume dimezzato rispetto W2, stessa qualità"
+        ]}
+      ],
+      note:"Questo mantiene l'acuità neuromuscolare senza accumulare fatica. Non aggiungere ripetute 'perché ti senti bene'."
+    },
+    {
+      num:"04", cat:"SALITA", icon:"⛰️", catColor:"#22c55e", int:"BASSA", intColor:"#22c55e", dur:"25 min",
+      label:"Camminata in Salita — Attivazione Leggera",
+      blocks:[
+        {t:"Sessione taper", i:[
+          "20-25 min camminata veloce su salita 15-20%",
+          "RPE 4 massimo — se senti il respiro aumentare molto, rallenta",
+          "Pratica la camminata con bastoncini: ritmo, coordinazione, appoggio",
+          "Nessuna ripetuta, nessuna intensità: è solo per non perdere il feeling della pendenza gara"
+        ]}
+      ]
+    }
+  ]
+},
+{
+  week:5, label:"GARA", sub:"21 GIU", color:"#a855f7",
+  focus:"Micro-taper finale. Tre sessioni brevissime, poi riposo e gara. L'allenamento è fatto: ora si raccoglie.",
+  pills:[{c:"#a855f7",t:"RACE WEEK"},{c:"#22c55e",t:"RIPOSO PRIORITÀ"}],
+  sessions:[
+    {
+      num:"01", cat:"CASA", icon:"💪", catColor:"#22c55e", int:"BASSA", intColor:"#22c55e", dur:"30 min",
+      label:"Upper Body — Leggerissimo (Lun 17)",
+      blocks:[
+        {t:"Solo 30 minuti", i:[
+          "Trazioni: 2×4 — tecnica perfetta, nessuno sforzo percepito",
+          "Spinta manubri panca inclinata — 14kg: 2×8",
+          "Military Press seduto — 12kg: 2×8",
+          "Stop. Non aggiungere nulla."
+        ]}
+      ]
+    },
+    {
+      num:"02", cat:"CORSA", icon:"🏃", catColor:"#3b82f6", int:"BASSA", intColor:"#22c55e", dur:"25 min",
+      label:"Attivazione Pre-Gara (Mar 18)",
+      blocks:[
+        {t:"Sessione breve", i:[
+          "20 min Z1 lento — 5:10-5:40/km",
+          "4× 20 sec a ritmo gara (non sprint, solo 'vivace') con 90 sec recupero",
+          "Obiettivo: sentire le gambe reattive, non fare fatica"
+        ]}
+      ]
+    },
+    {
+      num:"03", cat:"RIPOSO", icon:"😴", catColor:"#3b82f6", int:"—", intColor:"#3b82f6", dur:"—",
+      label:"Riposo Totale Mer 19 + Gio 20",
+      blocks:[
+        {t:"Protocollo Pre-Gara (Giovedì 20)", i:[
+          "Riposo assoluto — nessuna attività fisica",
+          "🍝 Sera: Pasta + olio evo + parmigiano · 900-1000 kcal · ore 19:30",
+          "💧 Idratazione: 2.5L acqua + pizzico sale rosa durante la giornata",
+          "💊 Magnesio Bisglicinato 400mg dopo cena",
+          "🎒 Kit: scarpe trail, bastoncini, 3 gel (sodio ≥150mg), salt caps, abbigliamento"
+        ]}
+      ]
+    },
+    {
+      num:"04", cat:"GARA", icon:"🏆", catColor:"#a855f7", int:"GARA", intColor:"#a855f7", dur:"~50 min",
+      label:"🏆 GARA — 21 Giugno · Target Sub 52 min",
+      blocks:[
+        {t:"Piano Gara (dettagli nel tab Strategia)", i:[
+          "H-3: Riso + banana + miele · 500 kcal",
+          "H-45 min: Gel attivazione + 400ml acqua elettrolitica",
+          "Km 0-2: RPE 5-6 — non inseguire chi parte forte",
+          "Km 2.2: PRIMO GEL nella discesa (sodio ≥150mg)",
+          "Km 3.5-5.5: power hiking + bastoncini — passi 40-50cm, cadenza 70-80/min",
+          "Km 5.5: SECONDO GEL — poi discesa a tutto",
+          "Km 9.1: 🏁"
+        ]}
+      ]
+    }
+  ]
+}
+];
+
+const catIcons = {CASA:"💪", CORSA:"🏃", SALITA:"⛰️", GARA:"🏆", RIPOSO:"😴"};
+let active = 0;
+
+function buildPills(){
+  const c = document.getElementById('week-pills'); c.innerHTML='';
+  weeks.forEach((w,i)=>{
+    const b = document.createElement('button');
+    b.className = 'week-pill' + (i===active?' active':'');
+    b.innerHTML = w.label + '<span class="sub">' + w.sub + '</span>';
+    b.addEventListener('click', ()=>{ active=i; buildPills(); buildWeek(); });
+    c.appendChild(b);
+  });
+}
+
+function buildWeek(){
+  const w = weeks[active];
+  const banner = document.getElementById('week-banner');
+  banner.style.borderLeftColor = w.color;
+  let badge = '';
+  if(w.week===4||w.label==='W4') badge='<div class="badge" style="color:#a855f7;border-color:#a855f7;background:rgba(168,85,247,.15)">TAPER</div>';
+  if(w.label==='GARA') badge='<div class="badge" style="color:#a855f7;border-color:#a855f7;background:rgba(168,85,247,.15)">RACE WEEK</div>';
+  let pillsHTML = w.pills.map(p=>`<div class="vol-pill" style="color:${p.c};border-color:${p.c};background:${p.c}18">${p.t}</div>`).join('');
+  banner.innerHTML = `
+    <div class="week-banner-title" style="color:${w.color}">${w.label} — ${w.sub} ${badge}</div>
+    <div class="week-banner-focus">${w.focus}</div>
+    <div class="week-volume">${pillsHTML}</div>`;
+
+  const container = document.getElementById('sessions-list'); container.innerHTML='';
+  w.sessions.forEach(s=>{
+    const card = document.createElement('div'); card.className='session-card';
+    const hdr = document.createElement('div'); hdr.className='session-header';
+    hdr.innerHTML=`
+      <div class="sess-left">
+        <div class="sess-type-icon">${s.icon}</div>
+        <div class="sess-num" style="color:${s.catColor};border-color:${s.catColor}40">${s.cat}</div>
+      </div>
+      <div class="session-meta">
+        <div class="sess-tag-row">
+          <span class="sess-int" style="color:${s.intColor}">${s.int}</span>
+          <span class="sess-dur">· ${s.dur}</span>
+        </div>
+        <div class="session-label">${s.label}</div>
+      </div>
+      <div class="session-chevron">▾</div>`;
+
+    const body = document.createElement('div'); body.className='session-body';
+    s.blocks.forEach(b=>{
+      if(b.t){ const t=document.createElement('div'); t.className='block-title'; t.textContent=b.t; body.appendChild(t); }
+      const items=document.createElement('div'); items.className='block-items';
+      b.i.forEach(item=>{ const d=document.createElement('div'); d.className='block-item'; d.innerHTML=`<span class="block-item-arrow">▸</span><span>${item}</span>`; items.appendChild(d); });
+      body.appendChild(items);
+    });
+    if(s.note){ const sn=document.createElement('div'); sn.className='session-note'; sn.innerHTML=`<span class="session-note-label">NOTA</span>${s.note}`; body.appendChild(sn); }
+
+    hdr.addEventListener('click',()=>{
+      const open = card.classList.contains('open');
+      container.querySelectorAll('.session-card.open').forEach(c=>c.classList.remove('open'));
+      if(!open) card.classList.add('open');
+    });
+    card.appendChild(hdr); card.appendChild(body); container.appendChild(card);
+  });
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+buildPills(); buildWeek();
+})();
+</script>
+</body>
+</html>
